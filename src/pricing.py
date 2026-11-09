@@ -14,5 +14,8 @@ def total_cents(items: list[dict], coupon: Optional[str] = None) -> int:
     subtotal = sum(item["quantity"] * item["unit_cents"] for item in items)
     if not coupon:
         return subtotal
-    discount = COUPONS[coupon]["percentage"]
+    try:
+        discount = COUPONS[coupon]["percent"]
+    except KeyError:
+        raise ValueError(f"Unknown coupon code: {coupon}")
     return subtotal - subtotal * discount // 100
